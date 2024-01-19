@@ -3,9 +3,9 @@
 branch convention : 
 - create your branch always from the develop branch.
 - naming branch convention :
-- Feature Branches: feature/<feature-name>, e.g., feature/login-system
-- fix bugs or correction: fix/<bug-description>, e.g., bugfix/login-error
-- chore, for conf task or all thaht is not a bug or feature: chore/<issue>, e.g., hotfix/urgent-login-crash
+  - Feature Branches: feature/<feature-name>, e.g., feature/login-system
+  - fix bugs or correction: fix/<bug-description>, e.g., bugfix/login-error
+  - chore, for conf task or all thaht is not a bug or feature: chore/<issue>, e.g., hotfix/urgent-login-crash
 
 commit convention :
 - feat(<scope of the feature\>): message brief but usefull

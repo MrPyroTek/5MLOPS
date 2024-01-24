@@ -8,3 +8,18 @@ Groupe : Thomas Angama, Théo Frère et Benjamin Fourmaux -- Beruet
 )]()
 
 ## Setup working enviroment
+We using [Docker](https://www.docker.com/) as container platform and build containers with Docker compose YAML manifest.
+
+### Containers
+list of all used containers :
+- `mlflow` : MLflow server
+
+### Deploiement
+For deploying environement, use this command :
+```bash
+docker compose up
+```
+That create, build, pull image and network.
+
+### Test all is working
+Go to the URL `http://localhost:5000` to see MLflow dashboard.

@@ -13,13 +13,23 @@ app = FastAPI(title=APP_TITLE,
 
 
 class InputData(BaseModel):
-    PULocationID: int
-    DOLocationID: int
-    passenger_count: int
+    age: int
+    sex: int
+    cp: int
+    trestbps: int
+    chol: int
+    fbs: int
+    restecg: int
+    thalach: int
+    exang: float
+    oldpeak: float
+    slope: int
+    ca: float
+    thal: float
 
 
 class PredictionOut(BaseModel):
-    trip_duration_prediction: float
+    has_heart_disease: bool
 
 
 pipeline = load_pipeline(PATH_TO_PIPELINE)
@@ -33,5 +43,5 @@ def home():
 
 @app.post("/predict", response_model=PredictionOut, status_code=201)
 def predict(payload: InputData):
-    trip_duration_prediction = run_inference(payload.dict(), pipeline)
-    return {"trip_duration_prediction": trip_duration_prediction}
+    has_heart_disease_int = run_inference(payload.dict(), pipeline)
+    return {"has_heart_disease": bool(has_heart_disease_int)}

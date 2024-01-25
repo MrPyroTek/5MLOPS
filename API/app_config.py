@@ -2,12 +2,11 @@
 APP_VERSION = "0.0.1"
 
 # MODELS
+MODEL_NAME = "heart_disease_classifier"
 MODEL_VERSION = "0.0.1"
-PATH_TO_PIPELINE = f"local_models/pipeline__v{MODEL_VERSION}.joblib"
-CATEGORICAL_VARS = ['PULocationID', 'DOLocationID', 'passenger_count']
+REPO_URL = "http://localhost:8000/"
+PATH_TO_MODEL = f"{REPO_URL}models/{MODEL_NAME}/production"
 
-# MISC
-APP_TITLE = "TripDurationPredictionApp"
-APP_DESCRIPTION = ("A simple API to predict trip duration in minutes "
-                   "for NYC yellow taxi trips, given a pickup, a dropoff location "
-                   "and a passenger count.")
+# API
+APP_TITLE = "HeartDiseasePredictionApp"
+APP_DESCRIPTION = "A simple API to predict if a patient has a heart disease "

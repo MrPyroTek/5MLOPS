@@ -1,0 +1,15 @@
+services:
+    mlflow:
+        container_name: mlflow
+        build: ./MLflow
+        ports:
+            - 5000:5000
+        volumes:
+            - ./MLflow/data:/mlflow
+        networks:
+            - mlops
+
+networks:
+    mlops:
+        name: mlops
+        driver: bridge

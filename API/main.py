@@ -1,11 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from app_config import MODEL_VERSION, APP_TITLE, APP_DESCRIPTION, APP_VERSION
 from lib.modelling import run_inference
-from lib.utils import load_pipeline
-from app_config import (MODEL_VERSION, APP_TITLE, APP_DESCRIPTION, APP_VERSION,
-                        PATH_TO_PIPELINE)
-
 
 app = FastAPI(title=APP_TITLE,
               description=APP_DESCRIPTION,
@@ -32,9 +29,6 @@ class PredictionOut(BaseModel):
     has_heart_disease: bool
 
 
-pipeline = load_pipeline(PATH_TO_PIPELINE)
-
-
 @app.get("/")
 def home():
     return {"health_check": "OK",
@@ -43,5 +37,5 @@ def home():
 
 @app.post("/predict", response_model=PredictionOut, status_code=201)
 def predict(payload: InputData):
-    has_heart_disease_int = run_inference(payload.dict(), pipeline)
+    has_heart_disease_int = run_inference(payload.dict())
     return {"has_heart_disease": bool(has_heart_disease_int)}

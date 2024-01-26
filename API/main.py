@@ -45,5 +45,5 @@ def home():
 @app.post("/predict", response_model=PredictionOut, status_code=201)
 def predict(payload: InputData):
     has_heart_disease_int = run_inference(dict(payload), loaded_model)
-
+    print("response :", has_heart_disease_int)
     return {"has_heart_disease": bool(has_heart_disease_int)}

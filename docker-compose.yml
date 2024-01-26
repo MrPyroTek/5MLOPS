@@ -8,6 +8,13 @@ services:
             - ./MLflow/data:/mlflow
         networks:
             - mlops
+    api:
+        container_name: api
+        build: ./API
+        ports:
+            - 8080:8080
+        networks:
+            - mlops
 
 networks:
     mlops:

@@ -22,10 +22,7 @@ def load_model_joblib(model_path: str):
     return joblib.load(model_path)
 
 
-def run_inference(data: dict) -> int:
-    # loaded_model = load_model(PATH_TO_MODEL)
-    loaded_model = load_model_joblib("../heart_Disease_prediction.joblib")
-
+def run_inference(data: dict, model: any) -> int:
     prepared_data = prepare_data(data)
 
     # return loaded_model.predict(prepared_data)[0]

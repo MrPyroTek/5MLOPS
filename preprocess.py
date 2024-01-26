@@ -1,21 +1,9 @@
 import numpy as np
 import pandas as pd
-import pickle
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.tree import DecisionTreeClassifier, plot_tree, export_graphviz
-from sklearn.metrics import classification_report
 from prefect import task, flow
-from typing import List
-
-
-# @task(name='load_data', tags=['preprocessing'], retries=2, retry_delay_seconds=60)
-# def load_data(path: str) -> pd.DataFrame:
-#     return pd.read_csv(path, index_col=0)
 
 
 @task(name='compute_yhat_binarization', tags=['preprocessing'])
@@ -28,6 +16,7 @@ def compute_target(
     df["num"] = np.where(df["num"] >= 1, 1, 0)
     return df
 
+
 @task(name='numeric_imputer', tags=['preprocessing'])
 def numeric_imputer(df, numerical_features):
     # Create a numeric transformer pipeline
@@ -37,6 +26,7 @@ def numeric_imputer(df, numerical_features):
     df[numerical_features] = numeric_transformer.fit_transform(df[numerical_features])
 
     return df
+
 
 @task(name='categorical_imputer', tags=['preprocessing'])
 def categorical_imputer(df, categorical_features):
@@ -49,6 +39,7 @@ def categorical_imputer(df, categorical_features):
     df[categorical_features] = categorical_transformer.fit_transform(df[categorical_features])
 
     return df
+
 
 @task(name='categorical_encoder', tags=['preprocessing'])
 def categorical_encoder(df, categorical_features):
@@ -76,7 +67,7 @@ def categorical_encoder(df, categorical_features):
 def process_data(df):
     df = df.drop(["num"], axis=1)
     df = compute_target(df)
-    numerical_features = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak', 'ca']
+    numerical_features = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak', 'ca'] #Todo: mettre ça dans le ficher de config
     categorical_features = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'thal']
     df = numeric_imputer(df, numerical_features)
     df = categorical_imputer(df, categorical_features)

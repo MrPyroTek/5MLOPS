@@ -1,9 +1,13 @@
 import mlflow
+import warnings
 from load import load_csv
 from preprocess import process_data, transform_data
 from train_predict import train_and_predict
 from config import CSV_DATA_PATH, MLFLOW_TRACKING_URI, MLFLOW_EXPERIMENT_NAME, REGISTERED_MODEL_NAME
 from prefect import flow
+
+warnings.filterwarnings('ignore')
+
 
 @flow(name="Process build model Flow")
 def pipeline_build_model():
@@ -20,15 +24,16 @@ def pipeline_build_model():
         print("Step 1 - Load data")
         df = load_csv(CSV_DATA_PATH)
 
-        print("Step 2 - Prepocessing data")
+        print("Step 2 - Preprocessing data")
         df_clean = process_data(df)
 
         print("Step 3 - Split data")
         x_train, x_test, y_train, y_test = transform_data(df_clean)
 
         print("Step 4 - Train and evaluate model")
-        knn_model, score_f1 = train_and_predict(x_train,y_train, x_test, y_test)
+        knn_model, score_f1 = train_and_predict(x_train, y_train, x_test, y_test)
         
+        print("Step 5 - Log metrics and model")
         mlflow.log_param(knn_model.get_params())
         mlflow.log_metric("f1_score",score_f1)
         mlflow.sklearn.log_model(knn_model,
@@ -37,9 +42,8 @@ def pipeline_build_model():
     
     client = mlflow.MlflowClient()
     client.transition_model_version_stage(name=REGISTERED_MODEL_NAME,
-                                          version=1,
-                                          stage="Developement")
-
+                                          version="1.0.0",
+                                          stage="Development")
 
 
 pipeline_build_model()

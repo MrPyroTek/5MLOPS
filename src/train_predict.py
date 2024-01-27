@@ -1,10 +1,9 @@
 import pandas as pd
-
 from prefect import flow
-
 from evaluate import evaluate
-from train_model import trainModel
+from train_model import train_model
 from predict import predict
+
 
 @flow(name="Model initialisation")
 def train_and_predict(
@@ -14,7 +13,7 @@ def train_and_predict(
         y_test: pd.DataFrame
 ) -> dict:
     """Train model, predict values and calculate error"""
-    model = trainModel(x_train, y_train)
+    model = train_model(x_train, y_train)
     prediction = predict(x_test, model)
     score_f1 = evaluate(y_test, prediction)
     return {'model': model, 'score_f1': score_f1}

@@ -24,6 +24,16 @@ services:
         networks:
             - mlops
 
+    api:
+        container_name: api
+        build: ./API
+        ports:
+            - 8080:8080
+        networks:
+            - mlops
+        depends_on:
+            - mlflow
+
 networks:
     mlops:
         name: mlops

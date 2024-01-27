@@ -4,7 +4,7 @@ from train_predict import train_and_predict
 from config import CSV_DATA_PATH
 from prefect import flow
 
-@flow(name="Build model flow")
+@flow(name="Process build model Flow")
 def pipeline_build_model():
 
     print("Step 1 - Load data")
@@ -21,3 +21,4 @@ def pipeline_build_model():
     print(score_f1)
 
 
+pipeline_build_model()

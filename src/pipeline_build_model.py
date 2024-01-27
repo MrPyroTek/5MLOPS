@@ -20,5 +20,4 @@ def pipeline_build_model():
     model, score_f1 = train_and_predict(x_train,y_train, x_test, y_test)
     print(score_f1)
 
-d = pipeline_build_model().run()
 

@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from prefect import task
 
-@task(name="Make prediction", tags=["Model"])
+@task(name="Make prediction", tags=["Predict"])
 def predict(input_data: pd.DataFrame, model_knn: KNeighborsClassifier)->np.array:
     """
     Use trained KNeighborsClassifier model

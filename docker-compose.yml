@@ -2,28 +2,13 @@ services:
     mlflow:
         container_name: mlflow
         build: ./MLflow
-        volumes:
-            - ./MLflow/data:/mlflow
         ports:
             - 5000:5000
-        networks:
-            - mlops
-
-    compute:
-        container_name: compute
-        build: ./src
         volumes:
           - ./prefect:/root/.prefect
         networks:
             - mlops
-    api:
-        container_name: api
-        build: ./API
-        ports:
-            - 8080:8080
-        networks:
-            - mlops
-
+    
     api:
         container_name: api
         build: ./API

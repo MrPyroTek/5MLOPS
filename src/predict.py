@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
 
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import KNeighborsClassifier
 from prefect import task
 
-@task(name="Make prediction", tags=["Predict"])
+@task(name="Make prediction", tags=["Evaluate"])
 def predict(input_data: pd.DataFrame, model_knn: KNeighborsClassifier)->np.array:
     """
     Use trained KNeighborsClassifier model

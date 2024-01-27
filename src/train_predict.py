@@ -17,4 +17,4 @@ def train_and_predict(
     model = trainModel(x_train, y_train)
     prediction = predict(x_test, model)
     score_f1 = evaluate(y_test, prediction)
-    return {'model': model, 'score_f1': score_f1}.values()
+    return {'model': model, 'score_f1': score_f1}

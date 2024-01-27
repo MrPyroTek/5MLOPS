@@ -3,7 +3,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV
 from prefect import task
 
-@task(name="Train model", tags=['Training'])
+    @task(name="Train model", tags=['Trainning'])
 def trainModel(x_train: pd.DataFrame, y_train: pd.DataFrame)->KNeighborsClassifier:
     """Train and return a KNeighborsClassifier model"""
     hyperparameters_knn = {"n_neighbors" : list(range(2,50)),

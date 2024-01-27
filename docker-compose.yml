@@ -2,12 +2,35 @@ services:
     mlflow:
         container_name: mlflow
         build: ./MLflow
-        ports:
-            - 5000:5000
         volumes:
             - ./MLflow/data:/mlflow
+        ports:
+            - 5000:5000
         networks:
             - mlops
+
+    compute:
+        container_name: compute
+        build: ./src
+        volumes:
+          - ./prefect:/root/.prefect
+          - ./data/HeartDiseaseUCI.csv:/app/local_data/HeartDiseaseUCI.csv
+        networks:
+            - mlops
+        ports:
+          - 4200:4200
+        depends_on:
+            - mlflow
+
+    api:
+        container_name: api
+        build: ./API
+        ports:
+            - 8080:8080
+        networks:
+            - mlops
+        depends_on:
+            - mlflow
 
 networks:
     mlops:

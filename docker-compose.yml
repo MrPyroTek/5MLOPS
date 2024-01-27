@@ -8,13 +8,6 @@ services:
             - 5000:5000
         networks:
             - mlops
-    api:
-        container_name: api
-        build: ./API
-        ports:
-            - 8080:8080
-        networks:
-            - mlops
 
     compute:
         container_name: compute
@@ -25,6 +18,16 @@ services:
             - mlops
         ports:
           - 4200:4200
+        depends_on:
+            - mlflow
+
+    api:
+        container_name: api
+        build: ./API
+        ports:
+            - 8080:8080
+        networks:
+            - mlops
         depends_on:
             - mlflow
 

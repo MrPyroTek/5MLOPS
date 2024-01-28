@@ -23,7 +23,15 @@ def load_model_joblib(model_path: str):
 
 
 def run_inference(data: dict, model: any) -> int:
+    """
+    Run Preprocessing pipeline on received data and predict with Production model
+    :param data: Received data
+    :param model: Saved model with Production stage
+    :return: A row of prediction
+    """
+
     prepared_data = prepare_data(data)
 
-    # return loaded_model.predict(prepared_data)[0]
-    return 1
+    pred = model.predict(prepared_data)[0]
+
+    return pred

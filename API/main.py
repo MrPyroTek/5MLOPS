@@ -33,8 +33,8 @@ class PredictionOut(BaseModel):
 
 # Loading model
 print("Loading model")
-# loaded_model = load_model(PATH_TO_MODEL)
-loaded_model = load_model_joblib("heart_Disease_prediction.joblib")
+loaded_model = load_model(PATH_TO_MODEL)
+
 
 @app.get("/")
 def home():

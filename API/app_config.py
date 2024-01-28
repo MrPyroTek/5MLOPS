@@ -4,8 +4,9 @@ APP_VERSION = "0.0.1"
 # MODELS
 MODEL_NAME = "heart_disease_model"
 MODEL_VERSION = "0.0.1"
-REPO_URL = "http://localhost:8000/"
-PATH_TO_MODEL = f"{REPO_URL}models/{MODEL_NAME}/Production"
+EXPERIENCE_NAME = "heart_disease_status"
+REPO_URL = "http://mlflow:5000/"
+# PATH_TO_MODEL = f"{REPO_URL}models/{MODEL_NAME}/Production"
 
 # API
 APP_TITLE = "HeartDiseasePredictionApp"

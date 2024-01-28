@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from typing import List
 from sklearn.pipeline import Pipeline
 from app_config import DATA_INDEX, CATEGORICAL_VARS, NUMERICAL_VARS, TARGET_NAME
 from sklearn.impute import SimpleImputer
@@ -10,7 +11,6 @@ def prepare_data(data: dict) -> pd.DataFrame:
 
     # Preprocessing pipeline
     df = to_dataframe(data)
-    df = compute_target(df)
     df = numeric_imputer(df, NUMERICAL_VARS)
     df = categorical_imputer(df, CATEGORICAL_VARS)
     df = categorical_encoder(df, CATEGORICAL_VARS)
@@ -20,15 +20,6 @@ def prepare_data(data: dict) -> pd.DataFrame:
 
 def to_dataframe(data: dict) -> pd.DataFrame:
     return pd.DataFrame(data=data, index=DATA_INDEX)
-
-
-def compute_target(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Cree un Yhat binaire correspondant a la potentielle présence ou non d'une maladie cardiaque
-    """
-    df["potential"] = np.where(df["num"] >= 1, 1, 0)
-    df = df.drop(["num"], axis=1)
-    return df
 
 
 def numeric_imputer(df: pd.DataFrame, numerical_features: List[str]) -> pd.DataFrame:

@@ -43,7 +43,7 @@ def pipeline_build_model():
                                  registered_model_name=REGISTERED_MODEL_NAME,
                                  )
         # Add tag env Staging (newer version of MLflow)
-        mlflow.set_tag("env", "production")
+        mlflow.set_tag("env", "staging")
     
     client = mlflow.MlflowClient()
     client.transition_model_version_stage(name=REGISTERED_MODEL_NAME,

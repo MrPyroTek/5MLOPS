@@ -3,8 +3,10 @@ import pandas as pd
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.model_selection import train_test_split
 from prefect import task, flow
 from typing import List
+from config import TARGET_NAME, NUMERICAL_VARS, CATEGORICAL_VARS
 
 
 @task(name='compute_target', tags=['preprocessing'])
@@ -34,7 +36,7 @@ def numeric_imputer(
     return df
 
 
-@task(name='categorical_imputer', tags=['preprocessing'])
+@task(name='categorical_inputer', tags=['preprocessing'])
 def categorical_imputer(
         df: pd.DataFrame,
         categorical_features: List[str]
@@ -74,6 +76,50 @@ def categorical_encoder(
     return df
 
 
+@task(name='extract_x_y', tags=['preprocessing'])
+def extract_x_y(
+        df: pd.DataFrame,
+        target: str = TARGET_NAME,
+        with_target: bool = True
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Take a dataframe, extract target variable
+    :return data without target value and the target values if needed.
+    """
+    y = None
+    if with_target:
+        y = df[target]
+        df = df.drop(target, axis=1)
+
+    x = df
+    return x, y
+
+
+@task(name="Split_dataset", tags=['preprocessing'])
+def split_dataset(x: pd.DataFrame,
+                  y: pd.DataFrame
+                  ) -> dict:
+    """
+    Split data into train and test dataset:return x_train, x_test, y_train, y_test
+    """
+
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, stratify=y)
+    y_train = pd.DataFrame(y_train)
+    y_test = pd.DataFrame(y_test)
+
+    return {'x_train': x_train, 'x_test': x_test, 'y_train': y_train,  'y_test': y_test}
+
+
+@flow(name="split_data")
+def transform_data(df_clean: pd.DataFrame) -> dict:
+    """
+    Extract target value from dataset and split it into train and test dataset
+    """
+    x, y = extract_x_y(df_clean)
+
+    return split_dataset(x=x, y=y).values()
+
+
 @flow(name="process_data", retries=1, retry_delay_seconds=30)
 def process_data(
         df: pd.DataFrame
@@ -82,9 +128,8 @@ def process_data(
     process le dataframe
     """
     df = compute_target(df)
-    numerical_features = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak', 'ca']  # Todo: déplacer dans config
-    categorical_features = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'thal']
-    df = numeric_imputer(df, numerical_features)
-    df = categorical_imputer(df, categorical_features)
-    df = categorical_encoder(df, categorical_features)
+    df = numeric_imputer(df, NUMERICAL_VARS)
+    df = categorical_imputer(df, CATEGORICAL_VARS)
+    df = categorical_encoder(df, CATEGORICAL_VARS)
+
     return df

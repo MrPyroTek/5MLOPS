@@ -61,7 +61,7 @@ What is recording ?
 The API require a model with alias `production` to get him and predict with.
 
 
-By default model build from the training pipeline are tagged with `staging`. You need to manually add this `production` alias via the MLflow Dashboard (http://localhos:5000).
+By default model build from the training pipeline are tagged with `staging`. You need to manually add this `production` alias via the MLflow Dashboard (http://localhost:5000).
 
 
 Select the desired model and clic on the "Add alias" button on model informations section. Type `production` in the text field and save. Follow the [documentation](https://mlflow.org/docs/latest/model-registry.html#deploy-and-organize-models) if needed.

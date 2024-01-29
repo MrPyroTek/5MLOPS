@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from app_config import MODEL_VERSION, APP_TITLE, APP_DESCRIPTION, APP_VERSION, PATH_TO_MODEL
+from app_config import MODEL_VERSION, APP_TITLE, APP_DESCRIPTION, APP_VERSION
 from lib.modelling import load_model_joblib, load_model, run_inference
 
 app = FastAPI(title=APP_TITLE,
@@ -33,8 +33,8 @@ class PredictionOut(BaseModel):
 
 # Loading model
 print("Loading model")
-# loaded_model = load_model(PATH_TO_MODEL)
-loaded_model = load_model_joblib("heart_Disease_prediction.joblib")
+loaded_model = load_model()
+
 
 @app.get("/")
 def home():
@@ -44,6 +44,7 @@ def home():
 
 @app.post("/predict", response_model=PredictionOut, status_code=201)
 def predict(payload: InputData):
+    print("Running prediction")
     has_heart_disease_int = run_inference(dict(payload), loaded_model)
     print("response :", has_heart_disease_int)
     return {"has_heart_disease": bool(has_heart_disease_int)}

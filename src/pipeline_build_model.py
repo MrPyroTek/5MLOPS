@@ -31,16 +31,19 @@ def pipeline_build_model():
         x_train, x_test, y_train, y_test = transform_data(df_clean)
 
         print("Step 4 - Train and evaluate model")
-        knn_model, score_f1 = train_and_predict(x_train, y_train, x_test, y_test)
+        model, score_f1 = train_and_predict(x_train, y_train, x_test, y_test)
         
         print("Step 5 - Log metrics and model")
-        for param_name, param_value in knn_model.get_params().items():
+        for param_name, param_value in model.get_params().items():
             mlflow.log_param(key=param_name, value=param_value)
 
         mlflow.log_metric("f1_score", score_f1)
-        mlflow.sklearn.log_model(knn_model,
+        mlflow.sklearn.log_model(model,
                                  artifact_path="model",
-                                 registered_model_name=REGISTERED_MODEL_NAME)
+                                 registered_model_name=REGISTERED_MODEL_NAME,
+                                 )
+        # Add tag env Staging (newer version of MLflow)
+        mlflow.set_tag("env", "staging")
     
     client = mlflow.MlflowClient()
     client.transition_model_version_stage(name=REGISTERED_MODEL_NAME,

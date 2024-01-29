@@ -8,7 +8,20 @@ Groupe : Thomas Angama, Théo Frère et Benjamin Fourmaux -- Beruet
 )]()
 
 ## Dataset
-// todo : Add dataset descritption and 
+- `âge` : âge en années
+- `sexe` : sexe (1 = masculin, 0 = féminin)
+- `cp` : type de douleur thoracique (Valeur 1 : angine typique, Valeur 2 : angine atypique, Valeur 3 : douleur non angineuse, Valeur 4 : asymptomatique)
+- `trestbps` : tension artérielle au repos (en mm Hg à l'admission à l'hôpital)
+- `chol` : cholestérol sérique en mg/dl
+- `fbs` : (glycémie à jeun > 120 mg/dl) (1 = vrai ; 0 = faux)
+- `restecg` : résultats électrocardiographiques au repos (Valeur 0 : normal, Valeur 1 : présentant une anomalie de l'onde ST-T (inversions de l'onde T et/ou élévation ou dépression du segment ST > 0,05 mV), Valeur 2 : montrant une hypertrophie ventriculaire gauche probable ou certaine selon Estes Critères)
+- `thalach` : fréquence cardiaque maximale atteinte
+- `exemple` : angine de poitrine induite par l'effort (1 = oui, 0 = non)
+- `oldpeak` = dépression ST induite par l'exercice par rapport au repos
+- `pente` : la pente du segment ST d'exercice maximal (Valeur 1 : montante, Valeur 2 : plate, Valeur 3 : descendante)
+- `ca` : nombre de gros vaisseaux (0-3) colorés par fluoroscopie
+- `thal` : (Valeur 3 : normal, Valeur 6 = défaut fixe, Valeur 7 = défaut réversible)
+- `num` : nombre de vaisseaux principaux (0-4) avec un rétrécissement de diamètre > 50 %
 
 ## Setup working enviroment
 We using [Docker](https://www.docker.com/) as container platform and build containers with Docker compose YAML manifest.
@@ -29,7 +42,7 @@ That create, build, pull image and make a network. And run containers
 ## Prefect Pipeline
 To run a pipline inside a container, type the following :
 ```bash
-docker exec -it 5mlde-compute python /app/pipeline_build_model.py
+docker exec -it compute python /app/pipeline_build_model.py
 ```
 and you will see the Prefect pipeline running.
 

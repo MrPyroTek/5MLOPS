@@ -57,6 +57,17 @@ What is recording ?
 - Model
 - Metrics (F1, RMSE...)
 
+### Turn a model into production
+The API require a model with alias `production` to get him and predict with.
+
+
+By default model build from the training pipeline are tagged with `staging`. You need to manually add this `production` alias via the MLflow Dashboard (http://localhos:5000).
+
+
+Select the desired model and clic on the "Add alias" button on model informations section. Type `production` in the text field and save. Follow the [documentation](https://mlflow.org/docs/latest/model-registry.html#deploy-and-organize-models) if needed.
+
+> Tag are the oldest method to identified production or development model. MLflow preconise to use [alias](https://mlflow.org/docs/latest/model-registry.html#deploy-and-organize-models-with-aliases-and-tags) instead of tag.
+
 ## Predictions using API
 The API get the model with tag `Production` from MLflow repository and serve it on an endpoint.
 

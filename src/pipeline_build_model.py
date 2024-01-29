@@ -1,5 +1,7 @@
 import mlflow
 import warnings
+import pickle
+
 from load import load_csv
 from preprocess import process_data, transform_data
 from train_predict import train_and_predict
@@ -14,7 +16,7 @@ def pipeline_build_model():
 
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
     mlflow.set_experiment(MLFLOW_EXPERIMENT_NAME)
-
+    
     with mlflow.start_run() as run:
         run_id = run.info.run_id
         print(f"run id: {run_id}")
@@ -25,7 +27,8 @@ def pipeline_build_model():
         df = load_csv(CSV_DATA_PATH)
 
         print("Step 2 - Preprocessing data")
-        df_clean = process_data(df)
+        df_clean, encoder_fit = process_data(df)
+        pickle.dump(encoder_fit, open("onehot_encoder_fit.pkl", 'wb'))
 
         print("Step 3 - Split data")
         x_train, x_test, y_train, y_test = transform_data(df_clean)
@@ -37,18 +40,19 @@ def pipeline_build_model():
         for param_name, param_value in model.get_params().items():
             mlflow.log_param(key=param_name, value=param_value)
 
+        mlflow.log_artifact("onehot_encoder_fit.pkl")
         mlflow.log_metric("f1_score", score_f1)
         mlflow.sklearn.log_model(model,
                                  artifact_path="model",
                                  registered_model_name=REGISTERED_MODEL_NAME,
                                  )
         # Add tag env Staging (newer version of MLflow)
-        mlflow.set_tag("env", "staging")
+        mlflow.set_tag("env", "production")
     
     client = mlflow.MlflowClient()
     client.transition_model_version_stage(name=REGISTERED_MODEL_NAME,
                                           version=1,
-                                          stage="Staging")
+                                          stage="production")
 
 
 pipeline_build_model()

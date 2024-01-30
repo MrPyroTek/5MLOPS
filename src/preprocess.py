@@ -54,17 +54,18 @@ def categorical_imputer(
 
 @task(name='categorical_encoder', tags=['preprocessing'])
 def categorical_encoder(
-        df: pd.DataFrame,
+        df: pd.DataFrame, 
         categorical_features: List[str]
-) -> pd.DataFrame:
+) -> tuple[pd.DataFrame, OneHotEncoder]:
+    """
+    Encode les valeurs categoriques et retourne le dataframe encodé ainsi que l'encodeur fit
+    """
     categorical_transformer = Pipeline(steps=[
-        ("imputation", SimpleImputer(strategy="most_frequent")),
         ("encoder", OneHotEncoder())
     ])
-    """
-    Encode les valeurs categoriques
-    """
-    df_encoded = categorical_transformer.fit_transform(df[categorical_features])
+    
+    df_encoder_fit = categorical_transformer.fit(df[categorical_features])
+    df_encoded = categorical_transformer.transform(df[categorical_features])
 
     df = pd.concat([df, pd.DataFrame(df_encoded.toarray(),
                                      columns=categorical_transformer.named_steps['encoder'].get_feature_names_out(
@@ -73,7 +74,7 @@ def categorical_encoder(
     # Drop the original categorical features
     df = df.drop(categorical_features, axis=1)
 
-    return df
+    return df, df_encoder_fit
 
 
 @task(name='extract_x_y', tags=['preprocessing'])
@@ -125,11 +126,11 @@ def process_data(
         df: pd.DataFrame
 ) -> pd.DataFrame:
     """
-    process le dataframe
+    Prepocess les données et retourne le dataset preprocessé ainsi que l'encoder fit
     """
     df = compute_target(df)
     df = numeric_imputer(df, NUMERICAL_VARS)
     df = categorical_imputer(df, CATEGORICAL_VARS)
-    df = categorical_encoder(df, CATEGORICAL_VARS)
+    df, encoder_fit = categorical_encoder(df, CATEGORICAL_VARS)
 
-    return df
+    return df, encoder_fit

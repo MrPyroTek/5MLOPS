@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 from app_config import MODEL_VERSION, APP_TITLE, APP_DESCRIPTION, APP_VERSION
 from lib.modelling import load_model_joblib, load_model, run_inference
+from lib.preprocessing import prepare_data, to_dataframe
 
 app = FastAPI(title=APP_TITLE,
               description=APP_DESCRIPTION,

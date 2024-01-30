@@ -49,23 +49,3 @@ def predict(payload: InputData):
     has_heart_disease_int = run_inference(dict(payload), loaded_model)
     print("response :", has_heart_disease_int)
     return {"has_heart_disease": bool(has_heart_disease_int)}
-
-@app.post("/encoder")
-def getEncodeur(payload: InputData):
-    print(f"input data : {dict(payload)}")
-    
-    df = prepare_data(dict(payload))
-
-    print(f"data shape : {df.shape}\n")
-    print(f"data columns : {df.columns()}")
-    model = load_model()
-
-    print(f"model : {type(model)}")
-    
-    print(f"feature model : {model.feature_names_in_}")
-    
-    #pred = model.predict(df)  
-
-    #print(f"predict : {pred}")
-
-    return {"result": "salut"}

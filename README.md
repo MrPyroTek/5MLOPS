@@ -8,20 +8,20 @@ Groupe : Thomas Angama, Théo Frère et Benjamin Fourmaux -- Beruet
 )]()
 
 ## Dataset
-- `âge` : âge en années
-- `sexe` : sexe (1 = masculin, 0 = féminin)
-- `cp` : type de douleur thoracique (Valeur 1 : angine typique, Valeur 2 : angine atypique, Valeur 3 : douleur non angineuse, Valeur 4 : asymptomatique)
-- `trestbps` : tension artérielle au repos (en mm Hg à l'admission à l'hôpital)
-- `chol` : cholestérol sérique en mg/dl
-- `fbs` : (glycémie à jeun > 120 mg/dl) (1 = vrai ; 0 = faux)
-- `restecg` : résultats électrocardiographiques au repos (Valeur 0 : normal, Valeur 1 : présentant une anomalie de l'onde ST-T (inversions de l'onde T et/ou élévation ou dépression du segment ST > 0,05 mV), Valeur 2 : montrant une hypertrophie ventriculaire gauche probable ou certaine selon Estes Critères)
-- `thalach` : fréquence cardiaque maximale atteinte
-- `exemple` : angine de poitrine induite par l'effort (1 = oui, 0 = non)
-- `oldpeak` = dépression ST induite par l'exercice par rapport au repos
-- `pente` : la pente du segment ST d'exercice maximal (Valeur 1 : montante, Valeur 2 : plate, Valeur 3 : descendante)
-- `ca` : nombre de gros vaisseaux (0-3) colorés par fluoroscopie
-- `thal` : (Valeur 3 : normal, Valeur 6 = défaut fixe, Valeur 7 = défaut réversible)
-- `num` : nombre de vaisseaux principaux (0-4) avec un rétrécissement de diamètre > 50 %
+- `age` : age in years
+- `sexe` : sexe (1 = male, 0 = female)
+- `cp` : type of chest pain (Value 1: typical angina, Value 2: atypical angina, Value 3: non-angina pain, Value 4: asymptomatic)
+- `trestbps` : resting blood pressure (in mmHg at hospital admission)
+- `chol` : serum cholesterol in mg/dl
+- `fbs` : (blood sugar level with an empty stomach > 120 mg/dl) (1 = true; 0 = false)
+- `restecg` : resting electrocardiographic results (Value 0: normal, Value 1: presenting an ST-T wave abnormality (T wave inversions and/or ST>0.05 mV segment elevation or depression), Value 2: showing probable left ventricular hypertrophy
+- `thalach` : maximum heart rate reached
+- `exemple` : exercise-induced angina (1 = yes, 0 = no)
+- `oldpeak` = ST depression induced by exercise compared to rest
+- `slope` : maximum exercise ST segment slope (Value 1 : increase, Value 2 : flat, Value 3 : decreases)
+- `ca` : number of large blood vessels (0-3) stained by fluoroscopy
+- `thal` : (Value 3 : normal, Value 6 = fixed fault, Value 7 = reversible defect)
+- `num` : number of major blood vessels (0-4) with a narrowing in diameter > 50 %
 
 ## Setup working enviroment
 We using [Docker](https://www.docker.com/) as container platform and build containers with Docker compose YAML manifest.

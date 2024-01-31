@@ -40,11 +40,21 @@ def pipeline_build_model():
         print("Step 5 - Train and evaluate model")
         model, score_f1 = train_and_predict(x_train, y_train, x_test, y_test)
         
-        print("Step 6 - Log metrics and model")
+        print("Step 6- Log metrics, model and dataset")
         for param_name, param_value in model.get_params().items():
             mlflow.log_param(key=param_name, value=param_value)
+        
+        innitial_dataset = mlflow.data.from_pandas(df, name="innitial_dataset")
+        clean_dataset = mlflow.data.from_pandas(df_clean, name="clean_dataset")
+        x_train_dataset = mlflow.data.from_pandas(x_train, name="x_train")
+        x_test_dataset = mlflow.data.from_pandas(x_test, name="x_test")
 
         mlflow.log_artifact("validation_data.json")
+        mlflow.log_input(innitial_dataset, context="training",tags={"name": "innitial_dataset"})
+        mlflow.log_input(clean_dataset, context="training",tags={"name": "clean_dataset"})
+        mlflow.log_input(x_train_dataset, context="training",tags={"name": "x_train_dataset"})
+        mlflow.log_input(x_test_dataset, context="testing",tags={"name": "x_test_dataset"})
+        
         mlflow.log_artifact("onehot_encoder_fit.pkl")
         mlflow.log_metric("f1_score", score_f1)
         mlflow.sklearn.log_model(model,

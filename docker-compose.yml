@@ -15,6 +15,7 @@ services:
         volumes:
           - ./prefect:/root/.prefect
           - ./data/HeartDiseaseUCI.csv:/app/local_data/HeartDiseaseUCI.csv
+          - ./src/gx:/app/gx
         networks:
             - mlops
         ports:

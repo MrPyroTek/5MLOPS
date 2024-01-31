@@ -3,6 +3,7 @@ import warnings
 import pickle
 
 from load import load_csv
+from validate import validate_df
 from preprocess import process_data, transform_data
 from train_predict import train_and_predict
 from config import CSV_DATA_PATH, MLFLOW_TRACKING_URI, MLFLOW_EXPERIMENT_NAME, REGISTERED_MODEL_NAME
@@ -26,17 +27,20 @@ def pipeline_build_model():
         print("Step 1 - Load data")
         df = load_csv(CSV_DATA_PATH)
 
-        print("Step 2 - Preprocessing data")
+        print("Step 2 - Validate data")
+        validate_df(df)
+
+        print("Step 3 - Preprocessing data")
         df_clean, encoder_fit = process_data(df)
         pickle.dump(encoder_fit, open("onehot_encoder_fit.pkl", 'wb'))
 
-        print("Step 3 - Split data")
+        print("Step 4 - Split data")
         x_train, x_test, y_train, y_test = transform_data(df_clean)
 
-        print("Step 4 - Train and evaluate model")
+        print("Step 5 - Train and evaluate model")
         model, score_f1 = train_and_predict(x_train, y_train, x_test, y_test)
         
-        print("Step 5 - Log metrics, model and dataset")
+        print("Step 6- Log metrics, model and dataset")
         for param_name, param_value in model.get_params().items():
             mlflow.log_param(key=param_name, value=param_value)
         
@@ -45,6 +49,7 @@ def pipeline_build_model():
         x_train_dataset = mlflow.data.from_pandas(x_train, name="x_train")
         x_test_dataset = mlflow.data.from_pandas(x_test, name="x_test")
 
+        mlflow.log_artifact("validation_data.json")
         mlflow.log_input(innitial_dataset, context="training",tags={"name": "innitial_dataset"})
         mlflow.log_input(clean_dataset, context="training",tags={"name": "clean_dataset"})
         mlflow.log_input(x_train_dataset, context="training",tags={"name": "x_train_dataset"})
@@ -57,7 +62,7 @@ def pipeline_build_model():
                                  registered_model_name=REGISTERED_MODEL_NAME,
                                  )
         # Add tag env Staging (newer version of MLflow)
-        mlflow.set_tag("env", "production")
+        mlflow.set_tag("env", "staging")
     
     client = mlflow.MlflowClient()
     client.transition_model_version_stage(name=REGISTERED_MODEL_NAME,
